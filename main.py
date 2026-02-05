@@ -17,15 +17,15 @@ from rich import print as rprint
 # Import all your modules
 # Note: Make sure these are in a 'modules' directory
 try:
-    from modules.hash import hash_file, verify_integrity
-    from modules.encryption import aes_ed, rsa_ed
-    from modules.passwords import check_strength, hash_pw, verify_password
-    from modules.breach_checker import BreachChecker
-    from modules.attack_simulator import AttackSimulator
-    from modules.phishing_detector import PhishingDetector
-    from modules.ssh_auditor import SSHKeyAuditor
-    from modules.cert_checker import CertificateChecker
-    from modules.git_scanner import GitSecretScanner
+    from modules.hashing.hash import hash_file, verify_integrity
+    from modules.encryption.encryption import aes_ed, rsa_ed
+    from modules.password.passwords import check_strength, hash_pw, verify_password
+    from modules.password.breach_checker import BreachChecker
+    from modules.attack_tools.attack_simulator import AttackSimulator
+    from modules.attack_tools.phishing_detector import PhishingDetector
+    from modules.security_auditor.ssh_auditor import SSHKeyAuditor
+    from modules.security_auditor.cert_checker import CertificateChecker
+    from modules.security_auditor.git_scanner import GitSecretScanner
 except ImportError as e:
     print(f"Error importing modules: {e}")
     print("Make sure all module files are in the 'modules' directory")
@@ -105,6 +105,11 @@ class CyberSwissKnife:
         table.add_row("  3.3", "  Git Secret Scanner", "  Detect committed secrets")
         table.add_row("  3.4", "  Phishing Detector", "  Analyze emails for phishing")
         
+        # Network tools 
+        table.add_row("4","[bold]🌐 Network Tools[/bold]","")
+        table.add_row("  4.1","  Port Scanner","   Scan for open ports on a Network ports")
+        table.add_row("  4.2","   WhoisLookup","   Domain Information")
+        table.add_row("  4.3","  IP Geolocation","  Locate IP address")        
         # System
         table.add_row("", "", "")
         table.add_row("0", "[bold red]Exit[/bold red]", "Exit the application")
@@ -471,6 +476,9 @@ PayPal Security Team
             self.git_scanner_menu()
         elif choice == "3.4":
             self.phishing_detector_menu()
+        elif choice == "4.1":
+            from modules.network.port_scanner import run_port_scanner
+            run_port_scanner()
         
         # Exit
         elif choice == "0":
