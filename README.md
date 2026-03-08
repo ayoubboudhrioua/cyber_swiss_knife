@@ -1,14 +1,6 @@
 <div align="center">
-```
-   ██████╗██╗  ██╗██╗███╗   ███╗███████╗██████╗  █████╗
-  ██╔════╝██║  ██║██║████╗ ████║██╔════╝██╔══██╗██╔══██╗
-  ██║     ███████║██║██╔████╔██║█████╗  ██████╔╝███████║
-  ██║     ██╔══██║██║██║╚██╔╝██║██╔══╝  ██╔══██╗██╔══██║
-  ╚██████╗██║  ██║██║██║ ╚═╝ ██║███████╗██║  ██║██║  ██║
-   ╚═════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
-```
 
-**Cyber Swiss Knife v3.0**
+<img src="assets/chimera_logo.png" alt="Chimera Logo" width="600"/>
 
 *A comprehensive, modular cybersecurity toolkit for education and authorized security testing*
 
