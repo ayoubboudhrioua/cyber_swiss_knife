@@ -3,3 +3,5 @@ cryptography
 zxcvbn
 rich
 requests
+pytest
+pytest-cov

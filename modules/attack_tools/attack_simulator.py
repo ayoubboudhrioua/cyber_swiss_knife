@@ -1,6 +1,9 @@
 import time
 import itertools
 import string
+import hashlib
+import os
+
 from rich.progress import Progress, SpinnerColumn, TimeElapsedColumn
 from rich.console import Console
 from rich.table import Table
@@ -46,10 +49,8 @@ class AttackSimulator:
                 
                 # Hash the password
                 if hash_type == 'sha256':
-                    import hashlib
                     hashed = hashlib.sha256(password.encode()).hexdigest()
                 elif hash_type == 'md5':
-                    import hashlib
                     hashed = hashlib.md5(password.encode()).hexdigest()
                 
                 if hashed == target_hash:
@@ -132,8 +133,6 @@ class AttackSimulator:
         """Demonstrate why salting is important"""
         console.print("[bold cyan]🌈 Rainbow Table Attack Demonstration[/bold cyan]\n")
         
-        import hashlib
-        
         # Common passwords
         passwords = ["password", "123456", "qwerty", "abc123"]
         
@@ -162,7 +161,6 @@ class AttackSimulator:
         
         # Show defense
         console.print("\n[green]Defense: Add salt to make rainbow tables useless[/green]")
-        import os
         salt = os.urandom(16).hex()
         salted_hash = hashlib.sha256((salt + "password").encode()).hexdigest()
         
@@ -183,7 +181,6 @@ def run_attack_demo():
     
     if choice == "1":
         # Dictionary attack demo
-        import hashlib
         target = "password"  # Example weak password
         target_hash = hashlib.sha256(target.encode()).hexdigest()
         

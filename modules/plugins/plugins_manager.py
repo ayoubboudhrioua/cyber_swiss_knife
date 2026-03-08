@@ -115,7 +115,7 @@ class PluginManager:
             return None
     def reload_plugins(self):
         """Reload all plugins"""
-        self.plugin = {}
+        self.plugins = {}
         self.load_plugins()
         console.print("[green]✅ Plugins reloaded[/green]")
         
@@ -124,7 +124,7 @@ def run_plugins_manager():
     """Interactive plugin manager"""
     manager = PluginManager()
     
-    console.print("\[bold cyan]🔌 Plugin Manager[/bold cyan]\n")
+    console.print("[bold cyan]🔌 Plugin Manager[/bold cyan]\n")
     while True:
         console.print("\n[bold]Options:[/bold]")
         console.print("1. List plugins")

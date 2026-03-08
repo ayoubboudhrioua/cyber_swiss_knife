@@ -28,14 +28,14 @@ def hash_pw(password):
 
 def verify_password(pw_attempt,hashed):
     if bcrypt.checkpw(pw_attempt.encode(),hashed):
-        return "Password correct Acess granted"
-    return "Password incorrect Acess denied"
+        return "Password Correct. Access granted"
+    return "Password Incorrect. Access denied"
 
 
 
 if __name__ == "__main__":
     while True:
-        password1 = getpass("Enter a password to checck strength: ")
+        password1 = getpass("Enter a password to check strength: ")
         print(check_strength(password1))
         if check_strength(password1).startswith("Weak"):
             print("Please choose a stronger password.")

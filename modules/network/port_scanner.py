@@ -23,7 +23,6 @@ class PortScanner:
             110: "POP3",
             143: "IMAP",
             443: "HTTPS",
-            143: "IMAP",
             5432: "PostgreSQL",
             3306: "MySQL",
             3389: "RDP",
@@ -42,7 +41,7 @@ class PortScanner:
             is_open = (result == 0)
             service = self.common_ports.get(port,"unknown")
             
-            #try to grab banner for service authentification
+            #try to grab banner for service identification
             if is_open:
                 try:
                     service = self.grab_banner(host,port)

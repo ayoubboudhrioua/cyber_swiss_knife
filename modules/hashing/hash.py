@@ -1,9 +1,7 @@
 import hashlib
+from pathlib import Path
 
-#text = "Hello World!"
-#hash_object = hashlib.sha256(text.encode())
-#hash_digest = hash_object.hexdigest()
-#print("SHA hash of: ",text," is ",hash_digest)
+
 
 def hash_file(file_path):
     h = hashlib.new("sha256")
@@ -18,13 +16,17 @@ def hash_file(file_path):
 def verify_integrity(file1,file2):
     hash1 = hash_file(file1)
     hash2 = hash_file(file2)
-    print("checking Integrirty between {} and {}" .format(file1,file2))
+    print("Checking Integrity between {} and {}" .format(file1,file2))
     if hash1 == hash2 :
         return "File is intact.No modifications have been made."
     return "File has been modified. Possibly unsafe"
         
 if __name__ == "__main__":
-    print("SHA Hash of file of is: ",hash_file("myenv\\sample_files\\sample.txt"))
-    print(verify_integrity("myenv\\sample_files\\sample.txt","myenv\\sample_files\\sample2.txt")) # the sample2 file is a just the same  with a few extra spaces 
+    import sys
+    if len(sys.argv) == 3:
+        print("SHA-256 Hash:", hash_file(sys.argv[1]))
+        print(verify_integrity(sys.argv[1], sys.argv[2]))
+    else:
+        print("Usage: python hash.py <file1> <file2>") 
     
     

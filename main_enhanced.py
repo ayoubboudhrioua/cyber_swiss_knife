@@ -4,6 +4,7 @@ A comprehensive cybersecurity toolkit
 """
 
 import sys
+import time
 from pathlib import Path
 from getpass import getpass
 
@@ -29,6 +30,19 @@ try:
     from modules.security_auditor.ssh_auditor import SSHKeyAuditor
     from modules.security_auditor.cert_checker import CertificateChecker
     from modules.security_auditor.git_scanner import GitSecretScanner
+    from modules.forensics.encoder_decoder import EncoderDecoder
+    from modules.forensics.metadata_extractor import MetadataExtractor
+    from modules.network.ip_geolocation import IPGeolocation
+    from modules.network.whois_lookup import WhoisLookup
+    from modules.password.password_policy import PasswordPolicy
+    from modules.reporting.report_generator import ReportGenerator
+    from modules.plugins.plugins_manager import PluginManager
+    from modules.security_auditor.jwt_analyzer import JWTAnalyzer
+    from modules.security_auditor.config_auditor import ConfigAuditor
+    from modules.forensics.steg_detector import SteganographyDetector
+    from modules.password.entropy_visualizer import EntropyVisualizer
+    from modules.password.password_generator import PasswordGenerator
+    
 except ImportError as e:
     print(f"❌ Import Error: {e}")
     print("\n💡 Make sure all modules are in the correct directories!")
@@ -37,19 +51,15 @@ except ImportError as e:
 console = Console()
 
 # ASCII Art
-ASCII_BANNER = """[bold cyan]
-   ██████╗██╗   ██╗██████╗ ███████╗██████╗     ███████╗██╗    ██╗██╗███████╗███████╗
-  ██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗    ██╔════╝██║    ██║██║██╔════╝██╔════╝
-  ██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝    ███████╗██║ █╗ ██║██║███████╗███████╗
-  ██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗    ╚════██║██║███╗██║██║╚════██║╚════██║
-  ╚██████╗   ██║   ██████╔╝███████╗██║  ██║    ███████║╚███╔███╔╝██║███████║███████║
-   ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚══════╝ ╚══╝╚══╝ ╚═╝╚══════╝╚══════╝
-  ██╗  ██╗███╗   ██╗██╗███████╗███████╗    ██╗   ██╗██████╗     ██████╗ 
-  ██║ ██╔╝████╗  ██║██║██╔════╝██╔════╝    ██║   ██║╚════██╗   ██╔═████╗
-  █████╔╝ ██╔██╗ ██║██║█████╗  █████╗      ██║   ██║ █████╔╝   ██║██╔██║
-  ██╔═██╗ ██║╚██╗██║██║██╔══╝  ██╔══╝      ╚██╗ ██╔╝ ╚═══██╗   ████╔╝██║
-  ██║  ██╗██║ ╚████║██║██║     ███████╗     ╚████╔╝ ██████╔╝██╗╚██████╔╝
-  ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚══════╝      ╚═══╝  ╚═════╝ ╚═╝ ╚═════╝ [/bold cyan]"""
+
+ASCII_BANNER = """[bold purple]
+ ██████╗██╗  ██╗██╗███╗   ███╗███████╗██████╗  █████╗ 
+██╔════╝██║  ██║██║████╗ ████║██╔════╝██╔══██╗██╔══██╗
+██║     ███████║██║██╔████╔██║█████╗  ██████╔╝███████║
+██║     ██╔══██║██║██║╚██╔╝██║██╔══╝  ██╔══██╗██╔══██║
+╚██████╗██║  ██║██║██║ ╚═╝ ██║███████╗██║  ██║██║  ██║
+ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+[/bold purple]"""
 
 class CyberSwissKnife:
     def __init__(self):
@@ -60,6 +70,18 @@ class CyberSwissKnife:
         self.ssh_auditor = SSHKeyAuditor()
         self.cert_checker = CertificateChecker()
         self.git_scanner = GitSecretScanner()
+        self.encoder_decoder = EncoderDecoder()
+        self.metadata_extractor = MetadataExtractor()
+        self.ip_geo = IPGeolocation()
+        self.whois = WhoisLookup()
+        self.password_policy = PasswordPolicy()
+        self.report_generator = ReportGenerator()
+        self.plugin_manager = PluginManager()
+        self.jwt_analyzer = JWTAnalyzer()
+        self.config_auditor = ConfigAuditor()
+        self.steg_detector = SteganographyDetector()
+        self.entropy_visualizer = EntropyVisualizer()
+        self.password_generator = PasswordGenerator()
     
     def display_welcome_screen(self):
         """Show animated welcome screen"""
@@ -90,7 +112,6 @@ class CyberSwissKnife:
         
         with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console, transient=True) as progress:
             task = progress.add_task("[cyan]Initializing...", total=100)
-            import time
             for i in range(100):
                 progress.update(task, advance=1)
                 time.sleep(0.01)
@@ -120,6 +141,9 @@ class CyberSwissKnife:
         table.add_row("2.1", "  Password Manager", "  Strength, hash, verify", "✓")
         table.add_row("2.2", "  Breach Checker", "  HaveIBeenPwned", "✓")
         table.add_row("2.3", "  Attack Simulator", "  Educational demos", "✓")
+        table.add_row("2.4", "  Password Policy", "  Policy validator & advisor", "✓")
+        table.add_row("2.5", "  Entropy Visualizer", "  Real-time entropy + crack times", "✓")
+        table.add_row("2.6", "  Password Generator", "  Secure passwords & passphrases",  "✓")
         
         table.add_row("", "", "", "")
         table.add_row("", "[bold reverse green] 🛡️  SECURITY AUDIT [/bold reverse green]", "", "")
@@ -127,12 +151,29 @@ class CyberSwissKnife:
         table.add_row("3.2", "  SSL/TLS Checker", "  Certificate monitor", "✓")
         table.add_row("3.3", "  Git Secret Scanner", "  Detect secrets", "✓")
         table.add_row("3.4", "  Phishing Detector", "  Email analysis", "✓")
+        table.add_row("3.5", "  JWT Analyzer",     "  Decode & audit JWTs",       "✓")
+        table.add_row("3.6", "  Config Auditor",   "  Scan for misconfigs",        "✓")
         
         table.add_row("", "", "", "")
         table.add_row("", "[bold reverse blue] 🌐 NETWORK TOOLS [/bold reverse blue]", "", "")
         table.add_row("4.1", "  Port Scanner", "  Network scanning", "✓")
-        table.add_row("4.2", "  WHOIS Lookup", "  Domain info", "⚠")
-        table.add_row("4.3", "  IP Geolocation", "  IP tracking", "⚠")
+        table.add_row("4.2", "  WHOIS Lookup", "  Domain info", "✓")
+        table.add_row("4.3", "  IP Geolocation", "  IP tracking", "✓")
+        
+        table.add_row("", "", "", "")
+        table.add_row("", "[bold reverse blue] 🔍 FORENSICS [/bold reverse blue]", "", "")
+        table.add_row("5.1", "  Encoder/Decoder", "  Base64, Hex, Binary, ROT13", "✓")
+        table.add_row("5.2", "  Metadata Extractor", "  File analysis & hashing", "✓")
+        table.add_row("5.3", "  Steg Detector",    "  Hidden data in images",      "✓")
+
+        table.add_row("", "", "", "")
+        table.add_row("", "[bold reverse magenta] 📊 REPORTING [/bold reverse magenta]", "", "")
+        table.add_row("6.1", "  Report Generator", "  Export scan results", "✓")
+
+        table.add_row("", "", "", "")
+        table.add_row("", "[bold reverse green] 🔌 PLUGINS [/bold reverse green]", "", "")
+        table.add_row("7.1", "  Plugin Manager", "  Load & run plugins", "✓")
+        
         
         table.add_row("", "", "", "")
         table.add_row("0", "[bold reverse red] EXIT [/bold reverse red]", "  Quit application", "✓")
@@ -149,7 +190,6 @@ class CyberSwissKnife:
         try:
             with Progress(SpinnerColumn(), TextColumn("[green]{task.description}"), BarColumn(), TextColumn("{task.percentage:>3.0f}%"), console=console) as progress:
                 task = progress.add_task("Hashing...", total=100)
-                import time
                 for i in range(100):
                     progress.update(task, advance=1)
                     time.sleep(0.01)
@@ -182,7 +222,6 @@ class CyberSwissKnife:
         message = Prompt.ask("[cyan]Message[/cyan]")
         try:
             with console.status("[green]Encrypting..."):
-                import time
                 time.sleep(0.3)
                 key, ciphertext, plaintext = aes_ed(message)
             console.print(Panel(f"[yellow]Original:[/yellow] {message}\n\n[cyan]Key:[/cyan] {key[:32]}...\n\n[red]Encrypted:[/red] {ciphertext[:50]}...\n\n[green]✅ Decrypted:[/green] {plaintext}", title="[bold green]AES Result[/bold green]", border_style="green", box=box.DOUBLE))
@@ -196,7 +235,6 @@ class CyberSwissKnife:
         message = Prompt.ask("[cyan]Message[/cyan]")
         try:
             with console.status("[green]Encrypting..."):
-                import time
                 time.sleep(0.3)
                 ciphertext, plaintext = rsa_ed(message)
             console.print(Panel(f"[yellow]Original:[/yellow] {message}\n\n[red]Encrypted:[/red] {ciphertext[:50]}...\n\n[green]✅ Decrypted:[/green] {plaintext}", title="[bold green]RSA Result[/bold green]", border_style="green", box=box.DOUBLE))
@@ -218,7 +256,6 @@ class CyberSwissKnife:
             else:
                 break
         with console.status("[green]Hashing..."):
-            import time
             time.sleep(0.3)
             hashed = hash_pw(password)
         console.print(f"\n[bold]Hash:[/bold]\n[yellow]{hashed.decode()}[/yellow]")
@@ -237,7 +274,6 @@ class CyberSwissKnife:
             task = progress.add_task("Checking...", total=100)
             for i in range(0, 100, 20):
                 progress.update(task, advance=20)
-                import time
                 time.sleep(0.1)
             is_pwned, count = self.breach_checker.check_password(password)
         self.breach_checker.display_result(password, is_pwned, count)
@@ -298,7 +334,6 @@ class CyberSwissKnife:
             task = progress.add_task("Scanning...", total=100)
             for i in range(0, 100, 25):
                 progress.update(task, advance=25)
-                import time
                 time.sleep(0.2)
             keys = self.ssh_auditor.scan_ssh_directory()
             auth_keys = self.ssh_auditor.check_authorized_keys()
@@ -349,7 +384,6 @@ class CyberSwissKnife:
                 pass
             email_body = "\n".join(lines)
         with console.status("[yellow]Analyzing..."):
-            import time
             time.sleep(0.5)
             risk_score, indicators = self.phishing_detector.analyze_email(email_body, sender, subject)
         self.phishing_detector.display_analysis(risk_score, indicators, sender, subject)
@@ -361,7 +395,106 @@ class CyberSwissKnife:
             run_port_scanner()
         except ImportError:
             console.print(Panel("[yellow]Network modules not yet implemented[/yellow]\nSee ADVANCED_FEATURES_GUIDE_PART1.md", border_style="yellow"))
+    def whois_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]WHOIS LOOKUP[/bold cyan]"))
+        console.print("="*70 + "\n")
+        domain = Prompt.ask("[cyan]Enter domain (e.g. google.com)[/cyan]")
+        domain = domain.replace("http://", "").replace("https://", "").split("/")[0]
+        with console.status(f"[green]Querying WHOIS for {domain}..."):
+            whois_data = self.whois.query_whois(domain)
+            parsed = self.whois.parse_whois_data(whois_data)
+        self.whois.display_whois_info(domain, whois_data, parsed)
     
+    def ip_geolocation_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]IP GEOLOCATION[/bold cyan]"))
+        console.print("="*70 + "\n")
+        console.print("[dim]Leave blank to look up your own public IP[/dim]\n")
+        ip = Prompt.ask("[cyan]Enter IP address[/cyan]", default="")
+        with console.status(f"[green]Looking up {ip or 'your IP'}..."):
+            data = self.ip_geo.lookup_ip(ip)
+        self.ip_geo.display_location_info(data)
+
+    def password_policy_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]PASSWORD POLICY ADVISOR[/bold cyan]"))
+        console.print("="*70 + "\n")
+        from modules.password.password_policy import run_password_policy
+        run_password_policy()
+
+    def encoder_decoder_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]ENCODER / DECODER[/bold cyan]"))
+        console.print("="*70 + "\n")
+        from modules.forensics.encoder_decoder import run_encoder_decoder
+        run_encoder_decoder()
+
+    def metadata_extractor_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]FILE METADATA EXTRACTOR[/bold cyan]"))
+        console.print("="*70 + "\n")
+        file_path = Prompt.ask("[cyan]Enter file path[/cyan]")
+        with console.status("[green]Analyzing..."):
+            metadata = self.metadata_extractor.extract_metadata(file_path)
+        self.metadata_extractor.display_metadata(metadata)
+
+    def report_generator_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]REPORT GENERATOR[/bold cyan]"))
+        console.print("="*70 + "\n")
+        from modules.reporting.report_generator import run_report_generator
+        run_report_generator()
+
+    def plugin_manager_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]PLUGIN MANAGER[/bold cyan]"))
+        console.print("="*70 + "\n")
+        from modules.plugins.plugins_manager import run_plugins_manager
+        run_plugins_manager()
+        
+        
+        
+        
+        
+    def jwt_analyzer_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]JWT ANALYZER[/bold cyan]"))
+        console.print("="*70 + "\n")
+        console.print("[dim]Paste your JWT token below (eyJ...)[/dim]\n")
+        token = Prompt.ask("[cyan]JWT Token[/cyan]")
+        with console.status("[green]Analyzing..."):
+            result = self.jwt_analyzer.analyze(token)
+        self.jwt_analyzer.display_analysis(result)
+
+    def config_auditor_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]CONFIG FILE AUDITOR[/bold cyan]"))
+        console.print("="*70 + "\n")
+        directory = Prompt.ask("[cyan]Directory to scan[/cyan]", default=".")
+        findings = self.config_auditor.scan_directory(directory)
+        self.config_auditor.display_findings(findings)
+
+    def steg_detector_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]STEGANOGRAPHY DETECTOR[/bold cyan]"))
+        console.print("="*70 + "\n")
+        file_path = Prompt.ask("[cyan]Image file path[/cyan]")
+        with console.status("[green]Analyzing..."):
+            result = self.steg_detector.analyze(file_path)
+        self.steg_detector.display_results(result)
+
+    def entropy_visualizer_menu(self):
+        console.print("\n" + "="*70)
+        console.print(Align.center("[bold cyan]ENTROPY VISUALIZER[/bold cyan]"))
+        console.print("="*70 + "\n")
+        from getpass import getpass
+        password = getpass("Password to analyze: ")
+        self.entropy_visualizer.display(password)
+
+    def password_generator_menu(self):
+        self.password_generator.run_interactive()
+        
     # Main Loop
     def run(self):
         self.display_welcome_screen()
@@ -393,6 +526,12 @@ class CyberSwissKnife:
             self.breach_checker_menu()
         elif choice == "2.3":
             self.attack_simulator_menu()
+        elif choice == "2.4":
+            self.password_policy_menu()
+        elif choice == "2.5":
+            self.entropy_visualizer_menu()
+        elif choice == "2.6":
+            self.password_generator_menu()
         elif choice == "3.1":
             self.ssh_auditor_menu()
         elif choice == "3.2":
@@ -401,10 +540,26 @@ class CyberSwissKnife:
             self.git_scanner_menu()
         elif choice == "3.4":
             self.phishing_detector_menu()
+        elif choice == "3.5":
+            self.jwt_analyzer_menu()
+        elif choice == "3.6":
+            self.config_auditor_menu()
         elif choice == "4.1":
             self.port_scanner_menu()
-        elif choice in ["4.2", "4.3"]:
-            console.print(Panel("[yellow]Coming soon![/yellow]", border_style="yellow"))
+        elif choice == "4.2":
+            self.whois_menu()
+        elif choice == "4.3":
+            self.ip_geolocation_menu()
+        elif choice == "5.1":
+            self.encoder_decoder_menu()
+        elif choice == "5.2":
+            self.metadata_extractor_menu()
+        elif choice == "5.3":
+            self.steg_detector_menu()
+        elif choice == "6.1":
+            self.report_generator_menu()
+        elif choice == "7.1":
+            self.plugin_manager_menu()
         elif choice == "0":
             self.exit_application()
         else:
